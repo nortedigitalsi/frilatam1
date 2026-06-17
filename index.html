@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Curso de Economía de Mercado · FRI LATAM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #071D4A; --blue: #0D2F6E; --mid: #163C84; --accent: #2563BE;
+      --light: #D6E4F7; --white: #FFFFFF; --bg: #0A2258;
+      --text: #1A2440; --muted: #6B7FA8; --correct: #16A34A; --wrong: #DC2626;
+    }
+    html { scroll-behavior: auto; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* DEMO RIBBON */
+    .demo-ribbon {
+      background: #F59E0B;
+      color: #fff;
+      text-align: center;
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      padding: 5px 0;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--navy);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,.4);
+    }
+    .header-inner {
+      max-width: 1100px; margin: 0 auto; height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo-wrap { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+    .logo-wrap img { height: 42px; width: auto; border-radius: 5px; background: white; padding: 3px; }
+    .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
+    .logo-text .brand { color: #fff; font-weight: 700; font-size: 1rem; letter-spacing: .03em; }
+    .logo-text .sub { color: rgba(255,255,255,.55); font-size: .68rem; font-weight: 400; letter-spacing: .05em; text-transform: uppercase; }
+
+    /* LANG SWITCHER */
+    .lang-switcher { display: flex; align-items: center; gap: 6px; }
+    .lang-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 20px;
+      padding: 5px 11px 5px 6px;
+      cursor: pointer;
+      transition: all .18s;
+      color: rgba(255,255,255,.75);
+      font-size: .72rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .lang-btn:hover { background: rgba(255,255,255,.16); color: #fff; border-color: rgba(255,255,255,.35); }
+    .lang-btn.active { background: rgba(255,255,255,.2); color: #fff; border-color: rgba(255,255,255,.45); }
+    .flag { font-size: 1.1rem; line-height: 1; }
+
+    /* HERO */
+    .hero { background: var(--navy); padding: 56px 32px 48px; text-align: center; border-bottom: 1px solid rgba(255,255,255,.07); }
+    .hero-inner { max-width: 720px; margin: 0 auto; }
+    .hero-eyebrow {
+      display: inline-block; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+      color: rgba(255,255,255,.8); font-size: .72rem; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; padding: 5px 16px; border-radius: 20px; margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: 'Barlow Condensed', sans-serif; color: #fff;
+      font-size: clamp(2.6rem, 6vw, 4rem); font-weight: 800;
+      line-height: 1.05; letter-spacing: .01em; text-transform: uppercase; margin-bottom: 14px;
+    }
+    .hero-desc { color: rgba(255,255,255,.72); font-size: 1rem; line-height: 1.65; max-width: 520px; margin: 0 auto 28px; }
+
+    /* PROFESOR BAR */
+    .profesor-bar {
+      display: inline-flex; align-items: center; gap: 14px;
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+      border-radius: 40px; padding: 8px 22px 8px 8px; margin-top: 8px;
+    }
+    .profesor-photo {
+      width: 44px; height: 44px; border-radius: 50%;
+      object-fit: cover; object-position: center top;
+      border: 2px solid rgba(255,255,255,.3); flex-shrink: 0;
+    }
+    .profesor-info { text-align: left; }
+    .profesor-info .name { color: #fff; font-weight: 700; font-size: .9rem; }
+    .profesor-info .role { color: rgba(255,255,255,.6); font-size: .72rem; line-height: 1.4; }
+
+    /* MAIN */
+    .main { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    /* PROGRESS */
+    .progress-wrap {
+      display: flex; align-items: center; margin-bottom: 32px;
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 40px; padding: 6px 10px; max-width: 560px;
+      margin-left: auto; margin-right: auto;
+    }
+    .progress-step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 7px 4px; border-radius: 32px; transition: background .3s; }
+    .progress-step.active { background: rgba(255,255,255,.12); }
+    .progress-step .dot { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .75rem; font-weight: 700; background: rgba(255,255,255,.1); color: rgba(255,255,255,.5); transition: all .3s; }
+    .progress-step.active .dot { background: #fff; color: var(--navy); }
+    .progress-step.done .dot { background: var(--correct); color: #fff; }
+    .progress-step .label { font-size: .65rem; color: rgba(255,255,255,.45); font-weight: 500; }
+    .progress-step.active .label { color: rgba(255,255,255,.9); font-weight: 600; }
+    .progress-step.done .label { color: rgba(255,255,255,.6); }
+    .progress-connector { width: 28px; height: 1px; background: rgba(255,255,255,.15); flex-shrink: 0; }
+
+    /* LESSON CARD */
+    .lesson-card { background: #fff; border-radius: 16px; box-shadow: 0 8px 40px rgba(0,0,0,.35); overflow: hidden; }
+    .lesson-header { padding: 24px 32px 18px; border-bottom: 1px solid #EDF2FB; display: flex; align-items: center; gap: 14px; }
+    .lesson-number { width: 40px; height: 40px; border-radius: 9px; background: var(--light); color: var(--blue); font-size: .95rem; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .lesson-info .title { font-size: 1.1rem; font-weight: 700; color: var(--navy); }
+    .lesson-info .meta { font-size: .78rem; color: var(--muted); margin-top: 2px; }
+    .video-wrap { position: relative; background: #000; aspect-ratio: 16/9; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block; }
+    .lesson-footer { padding: 18px 32px; display: flex; justify-content: flex-end; }
+
+    /* BUTTONS */
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 26px; border-radius: 40px; font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 700; cursor: pointer; border: none; transition: all .18s; text-decoration: none; letter-spacing: .01em; }
+    .btn-primary { background: var(--blue); color: #fff; box-shadow: 0 3px 14px rgba(13,47,110,.4); }
+    .btn-primary:hover { background: var(--accent); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,99,190,.4); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+
+    /* SLIDES */
+    .slides-viewport { overflow: hidden; }
+    .slides-track { display: flex; transition: transform .45s cubic-bezier(.4,0,.2,1); }
+    .slide { min-width: 100%; }
+
+    /* TEST */
+    .test-card { background: #fff; border-radius: 16px; box-shadow: 0 8px 40px rgba(0,0,0,.35); overflow: hidden; }
+    .test-header { background: var(--navy); padding: 30px 36px; color: #fff; border-bottom: 3px solid var(--accent); }
+    .test-header .eyebrow { font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 7px; }
+    .test-header h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 800; text-transform: uppercase; letter-spacing: .02em; }
+    .test-header p { margin-top: 8px; color: rgba(255,255,255,.65); font-size: .88rem; }
+    .test-body { padding: 36px; }
+    .question-block { margin-bottom: 38px; }
+    .question-block:last-of-type { margin-bottom: 0; }
+    .question-num { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 7px; }
+    .question-text { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 16px; line-height: 1.5; }
+    .options { display: flex; flex-direction: column; gap: 9px; }
+    .option { display: flex; align-items: center; gap: 13px; padding: 13px 16px; border: 2px solid #DDE5F2; border-radius: 9px; cursor: pointer; transition: all .18s; background: #fff; text-align: left; width: 100%; }
+    .option:hover { border-color: var(--accent); background: #F0F5FF; }
+    .option.selected { border-color: var(--blue); background: #EEF4FF; }
+    .option.correct { border-color: var(--correct); background: #F0FDF4; }
+    .option.wrong { border-color: var(--wrong); background: #FEF2F2; }
+    .option-dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #BCC8E0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .18s; }
+    .option.selected .option-dot { border-color: var(--blue); background: var(--blue); }
+    .option.correct .option-dot { border-color: var(--correct); background: var(--correct); }
+    .option.wrong .option-dot { border-color: var(--wrong); background: var(--wrong); }
+    .option-dot svg { display: none; }
+    .option.selected .option-dot svg, .option.correct .option-dot svg, .option.wrong .option-dot svg { display: block; }
+    .option-label { font-size: .92rem; color: var(--text); line-height: 1.4; }
+    .option.correct .option-label { color: var(--correct); font-weight: 600; }
+    .option.wrong .option-label { color: var(--wrong); }
+    .feedback-msg { margin-top: 8px; font-size: .8rem; font-weight: 600; padding: 7px 13px; border-radius: 7px; display: none; }
+    .feedback-msg.show { display: block; }
+    .feedback-msg.ok { background: #F0FDF4; color: var(--correct); }
+    .feedback-msg.err { background: #FEF2F2; color: var(--wrong); }
+    .test-submit-row { padding: 24px 36px; border-top: 1px solid #EDF2FB; display: flex; justify-content: flex-end; gap: 12px; }
+
+    /* RESULT */
+    #result-panel { display: none; text-align: center; padding: 44px 36px; border-top: 1px solid #EDF2FB; }
+    .result-icon { width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 18px; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+    .result-icon.pass { background: #F0FDF4; }
+    .result-icon.fail { background: #FEF2F2; }
+    #result-panel h3 { font-size: 1.4rem; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+    #result-panel p { color: var(--muted); font-size: .92rem; max-width: 420px; margin: 0 auto; }
+    .score-pill { display: inline-block; margin: 14px auto; padding: 9px 28px; border-radius: 40px; font-size: 1.4rem; font-weight: 800; }
+    .score-pill.pass { background: #F0FDF4; color: var(--correct); }
+    .score-pill.fail { background: #FEF2F2; color: var(--wrong); }
+
+    /* FOOTER */
+    footer { background: var(--navy); border-top: 1px solid rgba(255,255,255,.07); color: rgba(255,255,255,.4); padding: 24px; text-align: center; font-size: .78rem; line-height: 1.7; }
+    footer strong { color: rgba(255,255,255,.65); }
+
+    @media (max-width: 640px) {
+      .lang-btn span.lang-label { display: none; }
+      .lesson-header, .lesson-footer, .test-body, .test-submit-row { padding-left: 18px; padding-right: 18px; }
+      .test-header { padding: 22px 18px; }
+      .hero { padding: 40px 18px 36px; }
+    }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<!-- DEMO RIBBON -->
+<div class="demo-ribbon" data-i18n="demo_ribbon">⚠ DEMO — Versión de demostración · FRI LATAM</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a class="logo-wrap" href="#">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgfI_KnXRznrnFmuo6mTmhDgWyU-oPFrWsysAax7Ih4soEUBqCjRtPJC0d&s=10" alt="FRI LATAM Logo"/>
+      <div class="logo-text">
+        <span class="brand">FRI LATAM</span>
+        <span class="sub" data-i18n="header_sub">Fundación para la Responsabilidad Intelectual</span>
+      </div>
+    </a>
+    <div class="lang-switcher">
+      <button class="lang-btn active" id="btn-es" onclick="setLang('es')" title="Español">
+        <span class="flag">🇦🇷</span><span class="lang-label">ES</span>
+      </button>
+      <button class="lang-btn" id="btn-pt" onclick="setLang('pt')" title="Português">
+        <span class="flag">🇧🇷</span><span class="lang-label">PT</span>
+      </button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')" title="English">
+        <span class="flag">🇺🇸</span><span class="lang-label">EN</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <span class="hero-eyebrow" data-i18n="eyebrow">Programa de Formación · 2026</span>
+    <h1 data-i18n="hero_h1">Curso de<br>Economía<br>de Mercado<br><span style="font-size:.55em;letter-spacing:.18em;opacity:.75;font-weight:700;">FRI LATAM</span></h1>
+    <p class="hero-desc" data-i18n="hero_desc">Comprende los principios fundamentales de la economía a través de un enfoque riguroso, basado en la Escuela Austríaca y el pensamiento liberal clásico.</p>
+    <div class="profesor-bar">
+      <img class="profesor-photo" src="data:image/jpeg;base64,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" alt="Eduardo Marty"/>
+      <div class="profesor-info">
+        <div class="name">Prof. Eduardo Marty</div>
+        <div class="role" data-i18n="prof_role">Contador y Economista · Profesor UBA · Universidad Francisco Marroquín de Guatemala<br>Expositor Internacional · Objetivista</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main">
+
+  <div class="progress-wrap">
+    <div class="progress-step active" id="step-1">
+      <div class="dot">1</div>
+      <div class="label" data-i18n="step1">Clase 1</div>
+    </div>
+    <div class="progress-connector"></div>
+    <div class="progress-step" id="step-2">
+      <div class="dot">2</div>
+      <div class="label" data-i18n="step2">Clase 2</div>
+    </div>
+    <div class="progress-connector"></div>
+    <div class="progress-step" id="step-3">
+      <div class="dot">✓</div>
+      <div class="label" data-i18n="step3">Evaluación</div>
+    </div>
+  </div>
+
+  <div class="slides-viewport">
+    <div class="slides-track" id="track">
+
+      <!-- SLIDE 1 -->
+      <div class="slide">
+        <div class="lesson-card">
+          <div class="lesson-header">
+            <div class="lesson-number">01</div>
+            <div class="lesson-info">
+              <div class="title" data-i18n="l1_title">El Valor y el Intercambio</div>
+              <div class="meta" data-i18n="l1_meta">Unidad 1 · Clase 1 · Economía de Mercado</div>
+            </div>
+          </div>
+          <div class="video-wrap">
+            <iframe src="https://www.youtube-nocookie.com/embed/eltkJ5zMT8I?si=j0bddIahXJRvtBmD&rel=0&modestbranding=1&iv_load_policy=3&enablejsapi=1"
+              title="Clase 1" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <div class="lesson-footer">
+            <button class="btn btn-primary" onclick="goTo(2)">
+              <span data-i18n="btn_next_class">Siguiente clase</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 2 -->
+      <div class="slide">
+        <div class="lesson-card">
+          <div class="lesson-header">
+            <div class="lesson-number">02</div>
+            <div class="lesson-info">
+              <div class="title" data-i18n="l2_title">La Escala de Valores y los Bienes Económicos</div>
+              <div class="meta" data-i18n="l2_meta">Unidad 1 · Clase 2 · Economía de Mercado</div>
+            </div>
+          </div>
+          <div class="video-wrap">
+            <iframe src="https://www.youtube.com/embed/0mG2ZlTXvx0?si=z_WULngRFXJdIKsY&rel=0&modestbranding=1&iv_load_policy=3&enablejsapi=1"
+              title="Clase 2" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <div class="lesson-footer">
+            <button class="btn btn-primary" onclick="goTo(3)">
+              <span data-i18n="btn_go_test">Ir al test de evaluación</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 3: TEST -->
+      <div class="slide">
+        <div class="test-card">
+          <div class="test-header">
+            <div class="eyebrow" data-i18n="test_eyebrow">Evaluación · Unidad 1</div>
+            <h2 data-i18n="test_title">Test de Economía de Mercado</h2>
+            <p data-i18n="test_intro">Respondé todas las preguntas y enviá tus respuestas para conocer tu resultado.</p>
+          </div>
+          <div class="test-body" id="test-questions">
+
+            <div class="question-block">
+              <div class="question-num" data-i18n="q1_num">Pregunta 1 de 3</div>
+              <div class="question-text" data-i18n="q1_text">El intercambio entre dos personas se realiza cuando:</div>
+              <div class="options" data-q="1" data-correct="c">
+                <button class="option" data-val="a" onclick="pick(this)">
+                  <span class="option-dot"><svg viewBox="0 0 12 12" width="9" height="9"><polyline points="1.5,6 4.5,9 10.5,3" stroke="white" stroke-width="2" fill="none"/></svg></span>
+                  <span class="option-label" data-i18n="q1a">a) Cada uno valora más lo que entrega que lo que recibe</span>
+                </button>
+                <button class="option" data-val="b" onclick="pick(this)">
+                  <span class="option-dot"><svg viewBox="0 0 12 12" width="9" height="9"><polyline points="1.5,6 4.5,9 10.5,3" stroke="white" stroke-width="2" fill="none"/></svg></span>
+                  <span class="option-label" data-i18n="q1b">b) Cada uno valora igual lo que entrega que lo que recibe</span>
+                </button>
+                <button class="option" data-val="c" onclick="pick(this)">
+                  <span class="option-dot"><svg viewBox="0 0 12 12" width="9" height="9"><polyline points="1.5,6 4.5,9 10.5,3" stroke="white" stroke-width="2" fill="none"/></svg></span>
+                  <span class="option-label" data-i18n="q1c">c) Cada uno valora más lo que recibe que lo que entrega</span>
+                </button>
+                <button class="option" data-val="d" onclick="pick(this)">
+                  <span class="option-dot"><svg viewBox="0 0 12 12" width="9" height="9"><polyline points="1.5,6 4.5,9 10.5,3" stroke="white" stroke-width="2" fill="none"/></svg></span>
+                  <span class="option-label" data-i18n="q1d">d) Ninguna de las anteriores</span>
+                </button>
+              </div>
+              <div class="feedback-msg" id="fb-1"></div>
+            </div>
+
+            <div class="question-block">
+              <div class="question-num" data-i18n="q2_num">Pregunta 2 de 3</div>
+              <div class="question-text" data-i18n="q2_text">Según la Escuela Austríaca de economía, los bienes tienen valor en sí mismos.</div>
+              <div class="options" data-q="2" data-correct="falso">
+                <button class="option" data-val="verdadero" onclick="pick(this)">
+                  <span class="option-dot"><svg viewBox="0 0 12 12" width="9" height="9"><polyline points="1.5,6 4.5,9 10.5,3" stroke="white" stroke-width="2" fill="none"/></svg></span>
+                  <span class="option-label" data-i18n="q2_true">Verdadero</span>
+                </button>
+                <button class="option" data-val="falso" onclick="pick(this)">
+                  <span class="option-dot"><svg viewBox="0 0 12 12" width="9" height="9"><polyline points="1.5,6 4.5,9 10.5,3" stroke="white" stroke-width="2" fill="none"/></svg></span>
+                  <span class="option-label" data-i18n="q2_false">Falso</span>
+                </button>
+              </div>
+              <div class="feedback-msg" id="fb-2"></div>
+            </div>
+
+            <div class="question-block">
+              <div class="question-num" data-i18n="q3_num">Pregunta 3 de 3</div>
+              <div class="question-text" data-i18n="q3_text">Para que un bien tenga valor, ¿cuáles de las siguientes condiciones debe reunir?</div>
+              <div class="options" data-q="3" data-correct="util-escaso">
+                <button class="option" data-val="util" onclick="pick(this)">
+                  <span class="option-dot"><svg viewBox="0 0 12 12" width="9" height="9"><polyline points="1.5,6 4.5,9 10.5,3" stroke="white" stroke-width="2" fill="none"/></svg></span>
+                  <span class="option-label" data-i18n="q3a">Ser útil</span>
+                </button>
+                <button class="option" data-val="escaso" onclick="pick(this)">
+                  <span class="option-dot"><svg viewBox="0 0 12 12" width="9" height="9"><polyline points="1.5,6 4.5,9 10.5,3" stroke="white" stroke-width="2" fill="none"/></svg></span>
+                  <span class="option-label" data-i18n="q3b">Ser escaso</span>
+                </button>
+                <button class="option" data-val="costo" onclick="pick(this)">
+                  <span class="option-dot"><svg viewBox="0 0 12 12" width="9" height="9"><polyline points="1.5,6 4.5,9 10.5,3" stroke="white" stroke-width="2" fill="none"/></svg></span>
+                  <span class="option-label" data-i18n="q3c">Tener un costo</span>
+                </button>
+                <button class="option" data-val="util-escaso" onclick="pick(this)">
+                  <span class="option-dot"><svg viewBox="0 0 12 12" width="9" height="9"><polyline points="1.5,6 4.5,9 10.5,3" stroke="white" stroke-width="2" fill="none"/></svg></span>
+                  <span class="option-label" data-i18n="q3d">Ser útil y escaso</span>
+                </button>
+              </div>
+              <div class="feedback-msg" id="fb-3"></div>
+            </div>
+
+          </div>
+
+          <div id="result-panel">
+            <div class="result-icon" id="result-icon">🎓</div>
+            <h3 id="result-title"></h3>
+            <div class="score-pill" id="score-pill"></div>
+            <p id="result-msg"></p>
+          </div>
+
+          <div class="test-submit-row">
+            <button class="btn btn-primary" id="submit-btn" onclick="submitTest()">
+              <span data-i18n="btn_submit">Enviar respuestas</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+            <button class="btn btn-primary hidden" id="retry-btn" onclick="retryTest()">
+              <span data-i18n="btn_retry">Intentar nuevamente</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <strong>Eduardo Marty</strong> &amp; <strong>Alexander Wragge</strong> · FRI LATAM — <span data-i18n="footer_org">Fundación para la Responsabilidad Intelectual</span> · © 2026
+</footer>
+
+<script>
+// ── I18N ─────────────────────────────────────────────────────────
+const i18n = {
+  es: {
+    demo_ribbon: '⚠ DEMO — Versión de demostración · FRI LATAM',
+    header_sub: 'Fundación para la Responsabilidad Intelectual',
+    eyebrow: 'Programa de Formación · 2026',
+    hero_h1: 'Curso de<br>Economía<br>de Mercado<br><span style="font-size:.55em;letter-spacing:.18em;opacity:.75;font-weight:700;">FRI LATAM</span>',
+    hero_desc: 'Comprende los principios fundamentales de la economía a través de un enfoque riguroso, basado en la Escuela Austríaca y el pensamiento liberal clásico.',
+    prof_role: 'Contador y Economista · Profesor UBA · Universidad Francisco Marroquín de Guatemala<br>Expositor Internacional · Objetivista',
+    step1: 'Clase 1', step2: 'Clase 2', step3: 'Evaluación',
+    l1_title: 'El Valor y el Intercambio',
+    l1_meta: 'Unidad 1 · Clase 1 · Economía de Mercado',
+    l2_title: 'La Escala de Valores y los Bienes Económicos',
+    l2_meta: 'Unidad 1 · Clase 2 · Economía de Mercado',
+    btn_next_class: 'Siguiente clase',
+    btn_go_test: 'Ir al test de evaluación',
+    test_eyebrow: 'Evaluación · Unidad 1',
+    test_title: 'Test de Economía de Mercado',
+    test_intro: 'Respondé todas las preguntas y enviá tus respuestas para conocer tu resultado.',
+    q1_num: 'Pregunta 1 de 3', q2_num: 'Pregunta 2 de 3', q3_num: 'Pregunta 3 de 3',
+    q1_text: 'El intercambio entre dos personas se realiza cuando:',
+    q1a: 'a) Cada uno valora más lo que entrega que lo que recibe',
+    q1b: 'b) Cada uno valora igual lo que entrega que lo que recibe',
+    q1c: 'c) Cada uno valora más lo que recibe que lo que entrega',
+    q1d: 'd) Ninguna de las anteriores',
+    q2_text: 'Según la Escuela Austríaca de economía, los bienes tienen valor en sí mismos.',
+    q2_true: 'Verdadero', q2_false: 'Falso',
+    q3_text: 'Para que un bien tenga valor, ¿cuáles de las siguientes condiciones debe reunir?',
+    q3a: 'Ser útil', q3b: 'Ser escaso', q3c: 'Tener un costo', q3d: 'Ser útil y escaso',
+    btn_submit: 'Enviar respuestas', btn_retry: 'Intentar nuevamente',
+    footer_org: 'Fundación para la Responsabilidad Intelectual',
+    alert_all: 'Por favor respondé todas las preguntas antes de enviar.',
+    fb_correct: '✓ ¡Correcto!',
+    fb_wrong: '✗ Incorrecto. La respuesta correcta está marcada en verde.',
+    res_perfect_title: '¡Perfecto! Aprobaste la Unidad 1',
+    res_perfect_msg: 'Estás listo para pasar a la siguiente unidad.',
+    res_good_title: '¡Bien! Aprobaste la Unidad 1',
+    res_good_msg: 'Buen desempeño. Te recomendamos repasar las clases antes de continuar.',
+    res_fail_title: 'Necesitás repasar el contenido',
+    res_fail_msg: 'Te recomendamos volver a ver las clases y luego intentar nuevamente.',
+    score_label: 'correctas'
+  },
+  pt: {
+    demo_ribbon: '⚠ DEMO — Versão de demonstração · FRI LATAM',
+    header_sub: 'Fundação para a Responsabilidade Intelectual',
+    eyebrow: 'Programa de Formação · 2026',
+    hero_h1: 'Curso de<br>Economia<br>de Mercado<br><span style="font-size:.55em;letter-spacing:.18em;opacity:.75;font-weight:700;">FRI LATAM</span>',
+    hero_desc: 'Compreenda os princípios fundamentais da economia por meio de uma abordagem rigorosa, baseada na Escola Austríaca e no pensamento liberal clássico.',
+    prof_role: 'Contador e Economista · Professor UBA · Universidade Francisco Marroquín da Guatemala<br>Expositor Internacional · Objetivista',
+    step1: 'Aula 1', step2: 'Aula 2', step3: 'Avaliação',
+    l1_title: 'O Valor e a Troca',
+    l1_meta: 'Unidade 1 · Aula 1 · Economia de Mercado',
+    l2_title: 'A Escala de Valores e os Bens Econômicos',
+    l2_meta: 'Unidade 1 · Aula 2 · Economia de Mercado',
+    btn_next_class: 'Próxima aula',
+    btn_go_test: 'Ir para o teste de avaliação',
+    test_eyebrow: 'Avaliação · Unidade 1',
+    test_title: 'Teste de Economia de Mercado',
+    test_intro: 'Responda todas as perguntas e envie suas respostas para conhecer seu resultado.',
+    q1_num: 'Pergunta 1 de 3', q2_num: 'Pergunta 2 de 3', q3_num: 'Pergunta 3 de 3',
+    q1_text: 'A troca entre duas pessoas ocorre quando:',
+    q1a: 'a) Cada um valoriza mais o que entrega do que o que recebe',
+    q1b: 'b) Cada um valoriza igualmente o que entrega e o que recebe',
+    q1c: 'c) Cada um valoriza mais o que recebe do que o que entrega',
+    q1d: 'd) Nenhuma das anteriores',
+    q2_text: 'Segundo a Escola Austríaca de economia, os bens têm valor em si mesmos.',
+    q2_true: 'Verdadeiro', q2_false: 'Falso',
+    q3_text: 'Para que um bem tenha valor, quais das seguintes condições deve reunir?',
+    q3a: 'Ser útil', q3b: 'Ser escasso', q3c: 'Ter um custo', q3d: 'Ser útil e escasso',
+    btn_submit: 'Enviar respostas', btn_retry: 'Tentar novamente',
+    footer_org: 'Fundação para a Responsabilidade Intelectual',
+    alert_all: 'Por favor, responda todas as perguntas antes de enviar.',
+    fb_correct: '✓ Correto!',
+    fb_wrong: '✗ Incorreto. A resposta correta está marcada em verde.',
+    res_perfect_title: 'Perfeito! Você passou na Unidade 1',
+    res_perfect_msg: 'Você está pronto para passar para a próxima unidade.',
+    res_good_title: 'Muito bem! Você passou na Unidade 1',
+    res_good_msg: 'Bom desempenho. Recomendamos revisar as aulas antes de continuar.',
+    res_fail_title: 'Você precisa revisar o conteúdo',
+    res_fail_msg: 'Recomendamos assistir às aulas novamente e depois tentar de novo.',
+    score_label: 'corretas'
+  },
+  en: {
+    demo_ribbon: '⚠ DEMO — Demo version · FRI LATAM',
+    header_sub: 'Foundation for Intellectual Responsibility',
+    eyebrow: 'Training Program · 2026',
+    hero_h1: 'Market<br>Economics<br>Course<br><span style="font-size:.55em;letter-spacing:.18em;opacity:.75;font-weight:700;">FRI LATAM</span>',
+    hero_desc: 'Understand the fundamental principles of economics through a rigorous approach, grounded in the Austrian School and classical liberal thought.',
+    prof_role: 'Accountant & Economist · UBA Professor · Universidad Francisco Marroquín, Guatemala<br>International Speaker · Objectivist',
+    step1: 'Lesson 1', step2: 'Lesson 2', step3: 'Assessment',
+    l1_title: 'Value and Exchange',
+    l1_meta: 'Unit 1 · Lesson 1 · Market Economics',
+    l2_title: 'The Value Scale and Economic Goods',
+    l2_meta: 'Unit 1 · Lesson 2 · Market Economics',
+    btn_next_class: 'Next lesson',
+    btn_go_test: 'Go to assessment',
+    test_eyebrow: 'Assessment · Unit 1',
+    test_title: 'Market Economics Test',
+    test_intro: 'Answer all questions and submit your responses to see your result.',
+    q1_num: 'Question 1 of 3', q2_num: 'Question 2 of 3', q3_num: 'Question 3 of 3',
+    q1_text: 'Exchange between two people takes place when:',
+    q1a: 'a) Each person values what they give more than what they receive',
+    q1b: 'b) Each person values what they give and receive equally',
+    q1c: 'c) Each person values what they receive more than what they give',
+    q1d: 'd) None of the above',
+    q2_text: 'According to the Austrian School of economics, goods have value in themselves.',
+    q2_true: 'True', q2_false: 'False',
+    q3_text: 'For a good to have value, which of the following conditions must it meet?',
+    q3a: 'Be useful', q3b: 'Be scarce', q3c: 'Have a cost', q3d: 'Be useful and scarce',
+    btn_submit: 'Submit answers', btn_retry: 'Try again',
+    footer_org: 'Foundation for Intellectual Responsibility',
+    alert_all: 'Please answer all questions before submitting.',
+    fb_correct: '✓ Correct!',
+    fb_wrong: '✗ Incorrect. The correct answer is highlighted in green.',
+    res_perfect_title: 'Perfect! You passed Unit 1',
+    res_perfect_msg: 'You are ready to move on to the next unit.',
+    res_good_title: 'Well done! You passed Unit 1',
+    res_good_msg: 'Good performance. We recommend reviewing the lessons before continuing.',
+    res_fail_title: 'You need to review the content',
+    res_fail_msg: 'We recommend watching the lessons again and then trying once more.',
+    score_label: 'correct'
+  }
+};
+
+let currentLang = 'es';
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : lang;
+  ['es','pt','en'].forEach(l => {
+    document.getElementById('btn-'+l).classList.toggle('active', l === lang);
+  });
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────
+let current = 1;
+
+function pauseAllVideos() {
+  document.querySelectorAll('.video-wrap iframe').forEach(iframe => {
+    iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+  });
+}
+
+function goTo(n) {
+  pauseAllVideos();
+  current = n;
+  document.getElementById('track').style.transform = 'translateX(-' + ((n-1) * 100) + '%)';
+  for (let i = 1; i <= 3; i++) {
+    const step = document.getElementById('step-' + i);
+    step.classList.remove('active', 'done');
+    if (i < n) step.classList.add('done');
+    if (i === n) step.classList.add('active');
+  }
+}
+
+// ── QUIZ ──────────────────────────────────────────────────────
+const selections = {};
+
+function pick(btn) {
+  const group = btn.closest('.options');
+  const q = group.dataset.q;
+  group.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  btn.classList.add('selected');
+  selections[q] = btn.dataset.val;
+}
+
+function submitTest() {
+  const t = i18n[currentLang];
+  const answers = { '1': 'c', '2': 'falso', '3': 'util-escaso' };
+  let correct = 0;
+
+  for (let q = 1; q <= 3; q++) {
+    if (!selections[q]) { alert(t.alert_all); return; }
+  }
+
+  for (let q = 1; q <= 3; q++) {
+    const group = document.querySelector('.options[data-q="' + q + '"]');
+    const fb = document.getElementById('fb-' + q);
+    const userVal = selections[q];
+    const corrVal = answers[q];
+    group.querySelectorAll('.option').forEach(o => { o.onclick = null; o.style.cursor = 'default'; });
+    if (userVal === corrVal) {
+      correct++;
+      group.querySelector('.option[data-val="' + userVal + '"]').classList.remove('selected');
+      group.querySelector('.option[data-val="' + userVal + '"]').classList.add('correct');
+      fb.textContent = t.fb_correct;
+      fb.className = 'feedback-msg show ok';
+    } else {
+      group.querySelector('.option[data-val="' + userVal + '"]').classList.remove('selected');
+      group.querySelector('.option[data-val="' + userVal + '"]').classList.add('wrong');
+      group.querySelector('.option[data-val="' + corrVal + '"]').classList.add('correct');
+      fb.textContent = t.fb_wrong;
+      fb.className = 'feedback-msg show err';
+    }
+  }
+
+  const panel = document.getElementById('result-panel');
+  const icon  = document.getElementById('result-icon');
+  const title = document.getElementById('result-title');
+  const pill  = document.getElementById('score-pill');
+  const msg   = document.getElementById('result-msg');
+
+  panel.style.display = 'block';
+  document.getElementById('submit-btn').classList.add('hidden');
+  document.getElementById('retry-btn').classList.remove('hidden');
+
+  const pct = Math.round((correct / 3) * 100);
+  pill.textContent = correct + ' / 3 ' + t.score_label + ' (' + pct + '%)';
+
+  if (correct === 3) {
+    icon.textContent = '🏆'; icon.className = 'result-icon pass';
+    title.textContent = t.res_perfect_title;
+    pill.className = 'score-pill pass';
+    msg.textContent = t.res_perfect_msg;
+  } else if (correct >= 2) {
+    icon.textContent = '👍'; icon.className = 'result-icon pass';
+    title.textContent = t.res_good_title;
+    pill.className = 'score-pill pass';
+    msg.textContent = t.res_good_msg;
+  } else {
+    icon.textContent = '📖'; icon.className = 'result-icon fail';
+    title.textContent = t.res_fail_title;
+    pill.className = 'score-pill fail';
+    msg.textContent = t.res_fail_msg;
+  }
+}
+
+function retryTest() {
+  Object.keys(selections).forEach(k => delete selections[k]);
+  for (let q = 1; q <= 3; q++) {
+    const group = document.querySelector('.options[data-q="' + q + '"]');
+    const fb = document.getElementById('fb-' + q);
+    group.querySelectorAll('.option').forEach(o => {
+      o.classList.remove('selected','correct','wrong');
+      o.style.cursor = 'pointer';
+      o.onclick = function(){ pick(this); };
+    });
+    fb.className = 'feedback-msg'; fb.textContent = '';
+  }
+  document.getElementById('result-panel').style.display = 'none';
+  document.getElementById('submit-btn').classList.remove('hidden');
+  document.getElementById('retry-btn').classList.add('hidden');
+}
+</script>
+</body>
+</html>
